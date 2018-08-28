@@ -2,8 +2,11 @@ from test_framework import generic_test
 
 
 def reverse(x):
-    # TODO - you fill in here.
-    return 0
+    sign, x, res = 1 if x >= 0 else -1, abs(x), 0
+    while x:
+        res = res*10 + x % 10
+        x //= 10
+    return res*sign
 
 
 if __name__ == '__main__':
