@@ -2,6 +2,30 @@ from test_framework import generic_test
 
 
 def multiply(x, y):
+    def add(n1, n2):
+        carryin, t1, t2, k, rsum = 0, n1, n2, 0, 0
+        while t1 or t2:
+            ak = n1 & k
+            bk = n2 & k
+            carryout = (ak & bk) | (ak & carryin) | (bk & carryin)
+            rsum |= ak ^ bk ^ carryin
+            carryin = carryout << 1
+            k <<= 1
+            t1 >>= 1
+            t2 >>= 1
+        rsum |= carryin
+        return rsum
+
+    r_sum = 0
+    while x:
+        if x & 1:
+            r_sum = add(r_sum, y)
+        x >>= 1
+        y <<= 1
+    return r_sum
+
+
+def multiply_old(x, y):
 
     def add(num1, num2):
         running_sum, k, ta, tb, carryin = 0, 1, num1, num2, 0

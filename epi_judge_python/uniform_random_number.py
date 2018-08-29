@@ -12,8 +12,15 @@ def zero_one_random():
 
 
 def uniform_random(lower_bound, upper_bound):
-    # TODO - you fill in here.
-    return 0
+    b, n, len_n = upper_bound - lower_bound, 1, 0
+    while n <= b:
+        n, len_n = n << 1, len_n + 1
+    n, ans = n-1, float("inf")
+    while ans > b:
+        ans, i = 0, len_n - 1
+        while i >= 0:
+            ans, i = ans | (zero_one_random() << i), i - 1
+    return ans+lower_bound
 
 
 @enable_executor_hook
