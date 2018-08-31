@@ -8,8 +8,32 @@ RED, WHITE, BLUE = range(3)
 
 
 def dutch_flag_partition(pivot_index, A):
-    # TODO - you fill in here.
-    return
+    start, end, p = 0, len(A) - 1, A[pivot_index]
+
+    def move_boundaries(s, e):
+        while A[s] < p:
+            s += 1
+        while A[e] > p:
+            e -= 1
+        return s, e
+
+    start, end = move_boundaries(start, end)
+    i = start
+    while i <= end:
+        swap = False
+        if A[i] < p and i > start:  # Mistake 2, did not put the check if i > start
+            # print("Swapped i", i, A[i], " and start ", start, A[start])
+            A[i], A[start] = A[start], A[i]
+            swap = True
+        elif A[i] > p and i < end:  # Mistake 2, did not put the check if i < end
+            # print("Swapped i", i, A[i], " and end ", end, A[end])
+            A[i], A[end] = A[end], A[i]
+            swap = True
+        if swap and A[i] != p:
+            i -= 1
+        i += 1  # Mistake 1, had put this line before the check, causing the check to be incorrect
+        start, end = move_boundaries(start, end)
+    return A
 
 
 @enable_executor_hook
