@@ -6,11 +6,15 @@ from test_framework import generic_test
 from test_framework.random_sequence_checker import (
     check_sequence_is_uniformly_random, run_func_with_retries)
 from test_framework.test_utils import enable_executor_hook
+from random import randint
 
 
 def compute_random_permutation(n):
-    # TODO - you fill in here.
-    return []
+    arr = list(range(n))
+    for i in range(n):
+        r = randint(0, n-1)
+        a[r], a[i] = a[i], a[r]
+    return arr
 
 
 @enable_executor_hook

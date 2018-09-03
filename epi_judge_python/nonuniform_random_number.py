@@ -5,11 +5,19 @@ import math
 from test_framework import generic_test
 from test_framework.random_sequence_checker import run_func_with_retries
 from test_framework.test_utils import enable_executor_hook
+from random import uniform
 
 
 def nonuniform_random_number_generation(values, probabilities):
-    # TODO - you fill in here.
-    return 0
+    running_sum = 0
+    for i in range(len(probabilities)):
+        probabilities[i] += running_sum
+        running_sum += probabilities[i]
+    r = uniform(0, 1.0)
+    for i, p in enumerate(probabilities):
+        if r <= p:
+            return values[i]
+
 
 
 @enable_executor_hook
