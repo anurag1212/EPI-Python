@@ -1,17 +1,63 @@
 import functools
+import collections
 
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
 
 
+WHITE, GRAY, BLACK = range(3)
+
+
 class GraphVertex:
     def __init__(self):
+        self.color = WHITE
         self.edges = []
 
 
 def is_deadlocked(graph):
-    # TODO - you fill in here.
-    return True
+
+    def has_cycle_dfs(curr):
+        if curr.color == GRAY:
+            return True
+
+        curr.color = GRAY
+        for neighbour in curr.edges:
+            if neighbour.color != BLACK and has_cycle_dfs(neighbour):
+                return True
+
+        curr.color = BLACK
+        return False
+
+    for vertex in graph:
+        if vertex.color == WHITE:
+            if has_cycle_dfs(vertex):
+                return True
+
+    return False
+
+
+def is_deadlocked_bfs(graph):
+
+    def has_cycle_bfs(curr):
+        q = collections.deque()
+        q.append((curr, [curr]))
+        while q:
+            curr, path = q.popleft()
+            for neighbor in curr.edges:
+                if neighbor in path:
+                    return True
+                else:
+                    q.append((neighbor, path + [neighbor]))
+                    neighbor.color = GRAY
+            curr.color = BLACK
+        return False
+
+    for vertex in graph:
+        if vertex.color == WHITE:
+            if has_cycle_bfs(vertex):
+                return True
+
+    return False
 
 
 @enable_executor_hook

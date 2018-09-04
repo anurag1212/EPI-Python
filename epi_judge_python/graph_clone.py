@@ -3,16 +3,44 @@ import collections
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
+WHITE, GRAY, BLACK = range(3)
+
 
 class GraphVertex:
     def __init__(self, label):
         self.label = label
         self.edges = []
+        self.color = WHITE
 
 
 def clone_graph(graph):
-    # TODO - you fill in here.
-    return GraphVertex(0)
+    G = collections.OrderedDict()
+
+    def dfs(curr):
+        new_vertex = GraphVertex(None)
+        if curr.color == GRAY:
+            return
+        else:
+            new_vertex.label = curr.label
+            G[curr.label] = new_vertex
+        curr.color = GRAY
+        for in_neighbor in curr.edges:
+            new_vertex.edges.append(in_neighbor.label)
+            if in_neighbor.color != BLACK:
+                dfs(in_neighbor)
+        curr.color = BLACK
+
+    dfs(graph)
+    for v in G:
+        new_edges = list()
+        for neighbor in G[v].edges:
+            new_edges.append(G[neighbor])
+        G[v].edges = new_edges
+
+    start_vertex = G[graph.label]
+    G = list(G.values())
+
+    return start_vertex
 
 
 def copy_labels(edges):
