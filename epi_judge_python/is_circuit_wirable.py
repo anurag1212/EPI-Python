@@ -1,18 +1,40 @@
 import functools
+import collections
 
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
+
+WHITE, GRAY, BLACK = range(3)
 
 
 class GraphVertex:
     def __init__(self):
         self.d = -1
         self.edges = []
+        self.color = WHITE
+        self.side = None
 
 
 def is_any_placement_feasible(graph):
-    # TODO - you fill in here.
-    return True
+
+    def bfs(start):
+        q, start.side, start.color = collections.deque(), True, GRAY
+        q.append(start)
+        while q:
+            curr = q.popleft()
+            for neighbor in curr.edges:
+                if neighbor.color == WHITE:
+                    neighbor.side, neighbor.color = not curr.side, GRAY
+                    q.append(neighbor)
+                elif neighbor.side == curr.side:
+                    return True
+            curr.color = BLACK
+
+    left, right = [], []
+    cycle = any([bfs(v) for v in graph if v.color == WHITE])
+    for v in graph:
+        left.append(graph.index(v)) if v.side else right.append(graph.index(v))
+    return not cycle
 
 
 @enable_executor_hook
