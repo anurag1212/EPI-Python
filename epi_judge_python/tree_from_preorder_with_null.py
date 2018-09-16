@@ -4,9 +4,25 @@ from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
 
 
+class BinaryTreeNode():
+    __slots__ = "data", "left", "right"
+
+    def __init__(self, data, left, right):
+        self.data = data
+        self.left = left
+        self.right = right
+
+
 def reconstruct_preorder(preorder):
-    # TODO - you fill in here.
-    return None
+
+    def reconstruct(preorder_iter):
+        tree_key = next(preorder_iter)
+        if tree_key is None: return None
+        left_subtree = reconstruct(preorder_iter)
+        right_subtree = reconstruct(preorder_iter)
+        return BinaryTreeNode(tree_key, left_subtree, right_subtree)
+
+    return reconstruct(iter(preorder))
 
 
 @enable_executor_hook

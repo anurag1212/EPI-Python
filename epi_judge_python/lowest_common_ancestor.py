@@ -7,8 +7,19 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def lca(tree, node0, node1):
-    # TODO - you fill in here.
-    return None
+    res = []
+
+    def count_found(root):
+        if root is None:
+            return 0
+        my_count = count_found(root.left) + count_found(root.right)
+        if root == node0: my_count += 1
+        if root == node1: my_count += 1
+        if my_count == 2 and not res:
+            res.append(root)
+        return my_count
+    count_found(tree)
+    return res[0]
 
 
 @enable_executor_hook

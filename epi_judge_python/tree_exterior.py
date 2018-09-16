@@ -6,6 +6,7 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def exterior_binary_tree(tree):
+    # One traversal for left side and leaves, another for right side.
     # TODO - you fill in here.
     return []
 
