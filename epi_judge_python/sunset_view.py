@@ -1,9 +1,19 @@
 from test_framework import generic_test
+import collections
 
 
 def examine_buildings_with_sunset(sequence):
-    # TODO - you fill in here.
-    return []
+    res = []
+    building = collections.namedtuple("building", ("i", "h"))
+    for i, h in enumerate(sequence):
+        curr = building(i, h)
+        if not res:
+            res.append(curr)
+        else:
+            while res and res[-1].h <= curr.h:
+                res.pop()
+            res.append(curr)
+    return list(reversed([r.i for r in res]))
 
 
 def examine_buildings_with_sunset_wrapper(sequence):
