@@ -6,8 +6,22 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def gray_code(num_bits):
-    # TODO - you fill in here.
-    return []
+    res, visited = [0], {0}
+
+    def gray_code_helper(n):
+        if len(res) == 2**num_bits: return True
+        flipper = 1
+        for _ in range(num_bits):
+            candidate = n ^ flipper
+            if candidate not in visited:
+                visited.add(candidate)
+                res.append(candidate)
+                if gray_code_helper(candidate): return True
+                visited.remove(candidate)
+                res.pop()
+            flipper <<= 1
+    gray_code_helper(0)
+    return res
 
 
 @enable_executor_hook

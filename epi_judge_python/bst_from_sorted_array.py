@@ -8,8 +8,24 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def build_min_height_bst_from_sorted_array(A):
-    # TODO - you fill in here.
-    return None
+
+    class Tree:
+        __slots__ = "data", "left", "right"
+
+        def __init__(self, d):
+            self.data = d
+            self.left = None
+            self.right = None
+
+    def build(start, end):
+        if start == end: return None
+        mid = (start + end)//2
+        root = Tree(A[mid])
+        root.left = build(start, mid)
+        root.right = build(mid+1, end)
+        return root
+
+    return build(0, len(A))
 
 
 @enable_executor_hook
