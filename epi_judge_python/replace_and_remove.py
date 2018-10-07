@@ -5,8 +5,34 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def replace_and_remove(size, s):
-    # TODO - you fill in here.
-    return 0
+    num_a, res = 0, s
+    last = None
+    for i in range(len(res)):
+        if res[i] == "a":
+            num_a += 1
+        if res[i] == "b":
+            res[i] = None
+            if last is None: last = i
+        elif last is not None:
+            res[last], res[i] = res[i], res[last]
+            while res[last] is not None:
+                last += 1
+
+    shift = num_a
+    res.extend([None] * shift)
+
+    for i in range(last-1, -1, -1):
+        if res[i] == 'a':
+            res[i + shift], res[i + shift - 1] = 'd', 'd'
+            shift -= 1
+        else:
+            res[i + shift] = res[i]
+
+    if not res[-1]: res[-1] = ""
+    return res
+
+
+print(replace_and_remove(0, ['a', 'a', 'a', 'b', 'c', 'a', 'e', 'a', 'a']))
 
 
 @enable_executor_hook

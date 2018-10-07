@@ -2,8 +2,10 @@ from test_framework import generic_test
 
 
 def ss_decode_col_id(col):
-    # TODO - you fill in here.
-    return 0
+    res, power = 0, 0
+    for char in reversed(col):
+        res, power = res + (26 ** power) * (ord(char) - 64), power + 1
+    return res
 
 
 if __name__ == '__main__':
