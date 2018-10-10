@@ -8,8 +8,21 @@ Subarray = collections.namedtuple('Subarray', ('start', 'end'))
 
 
 def find_smallest_sequentially_covering_subset(paragraph, keywords):
-    # TODO - you fill in here.
-    return Subarray(0, 0)
+    begin, end, d, counter, keywords, res = 0, 0, float('inf'), set(), set(keywords), Subarray(0, 0)
+    while end < len(paragraph):
+        while end < len(paragraph) and counter != keywords:
+            if paragraph[end] in keywords:
+                counter.add(paragraph[end])
+            end += 1
+
+        while counter == keywords:
+            if end - begin + 1 < d:
+                d = end - begin + 1
+                res = Subarray(begin, end)
+            if paragraph[begin] in counter:
+                counter.remove(paragraph[begin])
+            begin += 1
+    return res
 
 
 @enable_executor_hook
