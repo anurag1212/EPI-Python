@@ -2,8 +2,14 @@ from test_framework import generic_test
 
 
 def get_max_trapped_water(heights):
-    # TODO - you fill in here.
-    return 0
+    s, e, maxwater = 0, len(heights) - 1, float('-inf')
+    while s < e:
+        maxwater = max(maxwater, (e-s)*min(heights[s], heights[e]))
+        if heights[s] < heights[e]:
+            s += 1
+        else:
+            e -= 1
+    return maxwater
 
 
 if __name__ == '__main__':
